@@ -10,6 +10,9 @@ gem "pg"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
+# Grape APIs for openapi schema
+gem "grape"
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
@@ -36,6 +39,7 @@ gem "bootsnap", require: false
 
 group :development, :test do
   gem 'rspec-rails', '~> 6.1.0'
+  gem 'factory_bot_rails'
 end
 
 group :development do
