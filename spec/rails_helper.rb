@@ -71,4 +71,6 @@ RSpec.configure do |config|
       with.library :rails
     end
   end
+
+  config.include RSpec::Rails::RequestExampleGroup, type: :request, file_path: /spec\/api/
 end
