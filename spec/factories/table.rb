@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :table do
-    sequence(:number) { |i| "Annie's Best Food #{i}" }
+    association :restaurant, factory: :restaurant
 
-    capacity { 3 }
+    sequence(:number) { |i| "Annie's Best Food #{i}" }
   end
 end
