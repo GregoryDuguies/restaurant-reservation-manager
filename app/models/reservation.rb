@@ -9,5 +9,7 @@ class Reservation < ApplicationRecord
 
   validates :start_datetime, presence: true
 
+  validates :total_guests, presence: true
+
   # validate start_datetime is in the future, but only on create?
 end

@@ -5,6 +5,8 @@ module API
       expose :owner_name
 
       expose :start_datetime
+
+      expose :total_guests
     end
   end
 end

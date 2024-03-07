@@ -11,5 +11,7 @@ RSpec.describe Reservation, type: :model do
     it { is_expected.to validate_presence_of(:owner_phone_number) }
 
     it { is_expected.to validate_presence_of(:start_datetime) }
+
+    it { is_expected.to validate_presence_of(:total_guests) }
   end
 end

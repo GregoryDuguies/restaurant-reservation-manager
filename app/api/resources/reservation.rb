@@ -31,6 +31,8 @@ module Resources
           requires :owner_phone_number, type: String, allow_blank: false, desc: 'Owner\'s phone number.'
 
           requires :start_datetime, type: DateTime, allow_blank: false, desc: 'Reservation Start Datetime'
+
+          requires :total_guests, type: Integer, allow_blank: false, desc: 'Reservation Capacity'
         end
 
         post do
@@ -40,7 +42,7 @@ module Resources
             owner_name: params[:owner_name]
           })
 
-          present reservation
+          present reservation, with: ::API::Entities::Reservation
         end
 
         # TODO: Support pagination

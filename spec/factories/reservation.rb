@@ -7,5 +7,7 @@ FactoryBot.define do
     owner_phone_number { "1-888-999-0000" }
 
     start_datetime { Time.zone.now - 1.week }
+
+    sequence :total_guests, (1..10).cycle
   end
 end
