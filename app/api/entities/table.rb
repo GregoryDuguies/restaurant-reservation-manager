@@ -1,6 +1,6 @@
 module API
   module Entities
-    class Reservation < Grape::Entity
+    class Table < Grape::Entity
       expose :restaurant
       expose :number
       expose :capacity
