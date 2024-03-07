@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-describe RestaurantReservationManager::API do
+describe Resources::Reservation::API do
 # describe do
   context 'GET /reservations/' do
     it 'returns all reservations' do
-      res = FactoryBot.create(:restaurant)
-      table = FactoryBot.create(:table, restaurant: res)
+      restaurant = FactoryBot.create(:restaurant)
+      table = FactoryBot.create(:table, restaurant: restaurant)
 
-      reservation = FactoryBot.create(:reservation, table: table, restaurant: res)
+      reservation = FactoryBot.create(:reservation, table: table, restaurant: restaurant)
 
       get "/reservations", as: :json
       expect(response.body).to eq [reservation].to_json
@@ -16,10 +16,10 @@ describe RestaurantReservationManager::API do
 
   context 'GET /reservations/:id' do
     it 'returns a reservation' do
-      res = FactoryBot.create(:restaurant)
-      table = FactoryBot.create(:table, restaurant: res)
+      restaurant = FactoryBot.create(:restaurant)
+      table = FactoryBot.create(:table, restaurant: restaurant)
 
-      reservation = FactoryBot.create(:reservation, table: table, restaurant: res)
+      reservation = FactoryBot.create(:reservation, table: table, restaurant: restaurant)
 
       get "/reservations/#{reservation.id}", as: :json
       expect(response.body).to eq reservation.to_json

@@ -41,6 +41,7 @@ module Resources
           present reservation
         end
 
+        # TODO: Support pagination
         desc 'Return all reservations'
         get do
           reservations = ::Reservation.all
@@ -50,7 +51,7 @@ module Resources
 
         desc 'Return a reservation'
         params do
-          requires :id, type: Integer, desc: 'Status ID.'
+          requires :id, type: Integer, desc: 'Reservation ID.'
         end
         route_param :id do
           get do
