@@ -10,7 +10,7 @@ describe Resources::Reservation::API do
       reservation = FactoryBot.create(:reservation, table: table, restaurant: restaurant)
 
       get "/reservations", as: :json
-      expect(response.body).to eq [reservation].to_json
+      expect(response.body).to eq [::API::Entities::Reservation.new(reservation)].to_json
     end
   end
 
@@ -22,7 +22,7 @@ describe Resources::Reservation::API do
       reservation = FactoryBot.create(:reservation, table: table, restaurant: restaurant)
 
       get "/reservations/#{reservation.id}", as: :json
-      expect(response.body).to eq reservation.to_json
+      expect(response.body).to eq ::API::Entities::Reservation.new(reservation).to_json
     end
   end
 end

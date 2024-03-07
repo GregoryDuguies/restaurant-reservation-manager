@@ -1,3 +1,5 @@
+require Rails.root.join('app', 'api', 'entities', 'reservation')
+
 module Resources
   module Reservation
     class API < Grape::API
@@ -46,7 +48,7 @@ module Resources
         get do
           reservations = ::Reservation.all
 
-          present reservations
+          present reservations, with: ::API::Entities::Reservation
         end
 
         desc 'Return a reservation'
@@ -57,7 +59,7 @@ module Resources
           get do
             reservation = ::Reservation.find(params[:id])
 
-            present reservation
+            present reservation, with: ::API::Entities::Reservation
           end
         end
       end
