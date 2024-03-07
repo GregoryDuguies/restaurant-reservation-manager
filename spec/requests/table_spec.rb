@@ -8,7 +8,7 @@ describe Resources::Table::API do
       table = FactoryBot.create(:table, restaurant: restaurant)
 
       get "/tables", as: :json
-      expect(response.body).to eq [table].to_json
+      expect(response.body).to eq [::API::Entities::Table.new(table)].to_json
     end
   end
 
@@ -18,7 +18,7 @@ describe Resources::Table::API do
       table = FactoryBot.create(:table, restaurant: restaurant)
 
       get "/tables/#{table.id}", as: :json
-      expect(response.body).to eq table.to_json
+      expect(response.body).to eq ::API::Entities::Table.new(table).to_json
     end
   end
 end

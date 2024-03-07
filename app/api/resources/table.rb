@@ -1,3 +1,5 @@
+require Rails.root.join('app', 'api', 'entities', 'table')
+
 module Resources
   module Table
     class API < Grape::API
@@ -29,7 +31,7 @@ module Resources
         get do
           tables = ::Table.all
 
-          present tables
+          present tables, with: ::API::Entities::Table
         end
 
         desc 'Return a table'
@@ -40,7 +42,7 @@ module Resources
           get do
             table = ::Table.find(params[:id])
 
-            present table
+            present table, with: ::API::Entities::Table
           end
         end
       end

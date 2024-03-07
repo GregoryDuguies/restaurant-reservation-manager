@@ -7,7 +7,7 @@ describe Resources::Restaurant::API do
       restaurant = FactoryBot.create(:restaurant)
 
       get "/restaurants", as: :json
-      expect(response.body).to eq [restaurant].to_json
+      expect(response.body).to eq [::API::Entities::Restaurant.new(restaurant)].to_json
     end
   end
 
@@ -16,7 +16,7 @@ describe Resources::Restaurant::API do
       restaurant = FactoryBot.create(:restaurant)
 
       get "/restaurants/#{restaurant.id}", as: :json
-      expect(response.body).to eq restaurant.to_json
+      expect(response.body).to eq ::API::Entities::Restaurant.new(restaurant).to_json
     end
   end
 end

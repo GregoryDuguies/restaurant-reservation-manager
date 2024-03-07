@@ -1,3 +1,5 @@
+require Rails.root.join('app', 'api', 'entities', 'restaurant')
+
 module Resources
   module Restaurant
     class API < Grape::API
@@ -29,7 +31,7 @@ module Resources
         get do
           restaurants = ::Restaurant.all
 
-          present restaurants
+          present restaurants, with: ::API::Entities::Restaurant
         end
 
         desc 'Return a restaurant'
@@ -40,7 +42,7 @@ module Resources
           get do
             restaurant = ::Restaurant.find(params[:id])
 
-            present restaurant
+            present restaurant, with: ::API::Entities::Restaurant
           end
         end
       end
