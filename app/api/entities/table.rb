@@ -3,7 +3,6 @@ module API
     class Table < Grape::Entity
       expose :restaurant
       expose :number
-      expose :capacity
     end
   end
 end

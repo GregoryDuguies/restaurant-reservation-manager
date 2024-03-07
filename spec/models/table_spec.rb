@@ -7,6 +7,5 @@ RSpec.describe Table, type: :model do
 
   context "validations" do
     it { is_expected.to validate_presence_of(:number) }
-    it { is_expected.to validate_presence_of(:capacity) }
   end
 end

@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :reservation do
-    association :restaurant
-    association :table
+    association :restaurant, factory: :restaurant
+    association :table, factory: :table
 
     owner_name { "Resy Best" }
     owner_phone_number { "1-888-999-0000" }
