@@ -27,22 +27,34 @@ module Resources
       resource :reservations do
         desc 'Create a reservation.'
         params do
-          requires :owner_name, type: String, allow_blank: false, desc: 'Owner\'s name.'
-          requires :owner_phone_number, type: String, allow_blank: false, desc: 'Owner\'s phone number.'
-
+          requires :restaurant_id, type: Integer, allow_blank: false, desc: 'Restaurant ID'
           requires :start_datetime, type: DateTime, allow_blank: false, desc: 'Reservation Start Datetime'
 
-          requires :total_guests, type: Integer, allow_blank: false, desc: 'Reservation Capacity'
+          requires :total_guests, type: Integer, allow_blank: false, desc: 'Reservation Total # of Guests'
+
+          requires :owner_name, type: String, allow_blank: false, desc: 'Owner\'s name.'
+          requires :owner_phone_number, type: String, allow_blank: false, desc: 'Owner\'s phone number.'
         end
 
         post do
           # authenticate!
-          reservation = Reservation.create!({
-            user: current_user,
-            owner_name: params[:owner_name]
-          })
 
-          present reservation, with: ::API::Entities::Reservation
+          restaurant = ::Restaurant.find(params[:restaurant_id])
+
+          if restaurant.max_availability_within_span(params[:start_datetime], params[:start_datetime] + 2.hours) > params[:total_guests]
+            reservation = ::Reservation.new(restaurant: restaurant,
+                                          start_datetime: params[:start_datetime],
+                                          end_datetime: params[:start_datetime] + 2.hours,
+                                          total_guests: params[:total_guests],
+                                          owner_name: params[:owner_name],
+                                          owner_phone_number: params[:owner_phone_number])
+
+            reservation.save!
+
+            present reservation, with: ::API::Entities::Reservation
+          else
+            error!({ "error" => "422 - Restaurant at Capacity" }, 422)
+          end
         end
 
         # TODO: Support pagination
