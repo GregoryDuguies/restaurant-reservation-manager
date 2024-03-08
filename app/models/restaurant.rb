@@ -3,7 +3,10 @@ class Restaurant < ApplicationRecord
   has_many :reservations
 
   validates :name, presence: true
-  validates :capacity, presence: true
+
+  def capacity
+    tables.sum(:capacity)
+  end
 
   def guests_at_datetime(datetime)
     total_guests = reservations.where(Reservation.arel_table[:start_datetime].lteq(datetime))
