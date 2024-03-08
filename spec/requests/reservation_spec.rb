@@ -23,6 +23,11 @@ describe Resources::Reservation::API do
   end
 
   context 'POST /reservations/' do
+    let(:restaurant) { FactoryBot.create(:restaurant) }
+
+    let!(:table_1) { FactoryBot.create(:table, restaurant: restaurant, capacity: 2) }
+    let!(:table_2) { FactoryBot.create(:table, restaurant: restaurant, capacity: 2) }
+
     let(:params) do
       {restaurant_id: restaurant.id,
        owner_name: "Testing Test",
@@ -33,12 +38,7 @@ describe Resources::Reservation::API do
     end
 
     context 'when restaurant is not at capacity' do
-      let(:restaurant) { FactoryBot.create(:restaurant, capacity: 4) }
-
       it 'creates and returns a reservation' do
-        FactoryBot.create(:table, restaurant: restaurant)
-        FactoryBot.create(:table, restaurant: restaurant)
-
         expect { post "/reservations/", params: params, as: :json }.to change{ Reservation.count }.by(1)
 
         reservation = Reservation.first
@@ -48,8 +48,6 @@ describe Resources::Reservation::API do
     end
 
     context 'when restaurant is at capacity' do
-      let(:restaurant) { FactoryBot.create(:restaurant, capacity: 4) }
-
       let!(:existing_reservation) do
         FactoryBot.create(:reservation,
                           restaurant: restaurant,
@@ -60,9 +58,6 @@ describe Resources::Reservation::API do
       end
 
       it 'does not create a reservation and returns an unprocessible entity' do
-        FactoryBot.create(:table, restaurant: restaurant)
-        FactoryBot.create(:table, restaurant: restaurant)
-
         expect { post "/reservations/", params: params, as: :json }.not_to change{ Reservation.count }
 
         expect(response.status).to eq 422

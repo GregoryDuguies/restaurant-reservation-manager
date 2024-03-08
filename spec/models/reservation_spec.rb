@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Reservation, type: :model do
+  context "factory_bot" do
+    it "creates a valid object"
+  end
+
   context "associations" do
     # it { is_expected.to belong_to(:table) }
     it { is_expected.to belong_to(:restaurant) }
