@@ -1,7 +1,7 @@
 class Reservation < ApplicationRecord
   # NOTE: Seems like a reservation should belong to both table and restaurant,
   # as opposed to going through a nested association
-  belongs_to :table
+  # belongs_to :table
   belongs_to :restaurant
 
   validates :owner_name, presence: true

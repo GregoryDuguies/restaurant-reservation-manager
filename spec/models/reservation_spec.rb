@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Reservation, type: :model do
   context "associations" do
-    it { is_expected.to belong_to(:table) }
+    # it { is_expected.to belong_to(:table) }
     it { is_expected.to belong_to(:restaurant) }
   end
 
