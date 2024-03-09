@@ -20,4 +20,8 @@ RSpec.describe Reservation, type: :model do
 
     it { is_expected.to validate_presence_of(:total_guests) }
   end
+
+  describe "#allocate_tables_v1" do
+    pending
+  end
 end
