@@ -51,6 +51,8 @@ module Resources
 
             reservation.save!
 
+            reservation.allocate_tables_v1
+
             present reservation, with: ::API::Entities::Reservation
           else
             error!({ "error" => "422 - Restaurant at Capacity" }, 422)
