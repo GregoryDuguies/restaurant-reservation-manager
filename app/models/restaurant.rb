@@ -9,11 +9,19 @@ class Restaurant < ApplicationRecord
   end
 
   def guests_at_datetime(datetime)
-    total_guests = reservations.where(Reservation.arel_table[:start_datetime].lteq(datetime))
-                               .where(Reservation.arel_table[:end_datetime].gteq(datetime))
-                               .sum(:total_guests)
+    reservations.where(Reservation.arel_table[:start_datetime].lteq(datetime))
+                .where(Reservation.arel_table[:end_datetime].gteq(datetime))
+                .joins(reservation_tables: :table )
+                .sum(:capacity)
+  end
 
-    total_guests
+  def available_tables_at_datetime(datetime)
+    occupied_table_ids = reservations.where(Reservation.arel_table[:start_datetime].lteq(datetime))
+                                     .where(Reservation.arel_table[:end_datetime].gteq(datetime))
+                                     .joins(reservation_tables: :table )
+                                     .pluck('tables.id')
+
+    tables.pluck(:id) - occupied_table_ids
   end
 
   def max_availability_within_span(start_datetime, end_datetime)

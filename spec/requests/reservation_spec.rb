@@ -25,9 +25,6 @@ describe Resources::Reservation::API do
   context 'POST /reservations/' do
     let(:restaurant) { FactoryBot.create(:restaurant) }
 
-    let!(:table_1) { FactoryBot.create(:table, restaurant: restaurant, capacity: 2) }
-    let!(:table_2) { FactoryBot.create(:table, restaurant: restaurant, capacity: 2) }
-
     let(:params) do
       {restaurant_id: restaurant.id,
        owner_name: "Testing Test",
@@ -38,16 +35,44 @@ describe Resources::Reservation::API do
     end
 
     context 'when restaurant is not at capacity' do
-      it 'creates and returns a reservation' do
-        expect { post "/reservations/", params: params, as: :json }.to change{ Reservation.count }.by(1)
+      context 'and an available table perfectly fits the total guests' do
+        let!(:table) { FactoryBot.create(:table, restaurant: restaurant, capacity: 4) }
 
-        reservation = Reservation.first
+        it 'creates and returns a reservation' do
+          expect { post "/reservations/", params: params, as: :json }.to change{ Reservation.count }.by(1)
 
-        expect(response.body).to eq ::API::Entities::Reservation.new(reservation).to_json
+          reservation = Reservation.first
+
+          expect(response.body).to eq ::API::Entities::Reservation.new(reservation).to_json
+
+          expect(reservation.reservation_tables.count).to eq(1)
+
+          reservation_table = reservation.reservation_tables.first
+          expect(reservation_table.table_id).to eq(table.id)
+        end
+      end
+
+      context 'and multiple tables perfectly fits the total guests' do
+        let!(:table_1) { FactoryBot.create(:table, restaurant: restaurant, capacity: 2) }
+        let!(:table_2) { FactoryBot.create(:table, restaurant: restaurant, capacity: 2) }
+
+        it 'creates and returns a reservation' do
+          expect { post "/reservations/", params: params, as: :json }.to change{ Reservation.count }.by(1)
+
+          reservation = Reservation.first
+
+          expect(response.body).to eq ::API::Entities::Reservation.new(reservation).to_json
+
+          expect(reservation.reservation_tables.count).to eq(2)
+          expect(reservation.reservation_tables.pluck(:table_id)).to contain_exactly(*[table_1.id, table_2.id])
+        end
       end
     end
 
     context 'when restaurant is at capacity' do
+      let!(:table_1) { FactoryBot.create(:table, restaurant: restaurant, capacity: 2) }
+      let!(:table_2) { FactoryBot.create(:table, restaurant: restaurant, capacity: 2) }
+
       let!(:existing_reservation) do
         FactoryBot.create(:reservation,
                           restaurant: restaurant,
@@ -56,6 +81,9 @@ describe Resources::Reservation::API do
                           start_datetime: Time.zone.now + 12.hour,
                           total_guests: 4)
       end
+
+      let!(:reservation_table_1) { FactoryBot.create(:reservation_table, reservation: existing_reservation, table: table_1) }
+      let!(:reservation_table_2) { FactoryBot.create(:reservation_table, reservation: existing_reservation, table: table_2) }
 
       it 'does not create a reservation and returns an unprocessible entity' do
         expect { post "/reservations/", params: params, as: :json }.not_to change{ Reservation.count }
