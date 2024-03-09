@@ -34,6 +34,24 @@ module Resources
           present tables, with: ::API::Entities::Table
         end
 
+        desc 'Return a list of occupied tables given a past datetime'
+        params do
+          # build_with Grape::Extensions::Hash::ParamBuilder
+
+          requires :restaurant_id, type: Integer, allow_blank: false, desc: 'Restaurant ID'
+          requires :reservation_datetime, type: DateTime, allow_blank: false, desc: 'Past Reservation DateTime.'
+        end
+
+        get :occupied do
+          restaurant = ::Restaurant.find(params[:restaurant_id])
+
+          table_ids = restaurant.occupied_tables_at_datetime(params[:reservation_datetime]).union(restaurant.occupied_tables_at_datetime(params[:reservation_datetime] + 2.hours))
+
+          tables = ::Table.find(table_ids)
+
+          present tables, with: ::API::Entities::Table
+        end
+
         desc 'Return a table'
         params do
           requires :id, type: Integer, desc: 'Table ID.'
