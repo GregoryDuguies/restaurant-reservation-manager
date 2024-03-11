@@ -39,22 +39,25 @@ module Resources
         post do
           # authenticate!
 
-          restaurant = ::Restaurant.find(params[:restaurant_id])
+          Reservation.transaction do
+            restaurant = ::Restaurant.find(params[:restaurant_id])
 
-          if restaurant.max_availability_within_span(params[:start_datetime], params[:start_datetime] + 2.hours) > params[:total_guests]
-            reservation = ::Reservation.new(restaurant: restaurant,
-                                          start_datetime: params[:start_datetime],
-                                          end_datetime: params[:start_datetime] + 2.hours,
-                                          total_guests: params[:total_guests],
-                                          owner_name: params[:owner_name],
-                                          owner_phone_number: params[:owner_phone_number])
+            if restaurant.max_availability_within_span(params[:start_datetime], params[:start_datetime] + 2.hours) > params[:total_guests]
+              reservation = ::Reservation.new(restaurant: restaurant,
+                                            start_datetime: params[:start_datetime],
+                                            end_datetime: params[:start_datetime] + 2.hours,
+                                            total_guests: params[:total_guests],
+                                            owner_name: params[:owner_name],
+                                            owner_phone_number: params[:owner_phone_number])
 
-            reservation.save!
+              reservation.save!
 
-            reservation.allocate_tables_v1
+              reservation.allocate_tables_v1
 
-            present reservation, with: ::API::Entities::Reservation
+              present reservation, with: ::API::Entities::Reservation
+            end
           else
+            # Return invalid record if transaction fails - ideally this returned error messages for invalid data
             error!({ "error" => "422 - Restaurant at Capacity" }, 422)
           end
         end
