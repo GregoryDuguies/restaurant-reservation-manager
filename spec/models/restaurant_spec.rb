@@ -22,6 +22,10 @@ RSpec.describe Restaurant, type: :model do
     pending
   end
 
+  describe "#available_tables_at_datetime" do
+    pending
+  end
+
   describe "#max_availability_within_span" do
     pending
   end
