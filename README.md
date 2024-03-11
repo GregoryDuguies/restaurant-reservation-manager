@@ -125,9 +125,23 @@ Post a new reservation. (Assumes restaurant ID can be selected from interface be
 curl --data "restaurant_id=1&owner_name=Testing Test&owner_phone_number=1-000-888-9999&start_datetime=2024-03-30T19:00:00Z&total_guests=3" http://127.0.0.1:3000/reservations -H "Accept: application/json"
 ```
 
+Example response from server
+```
+GD@MacBook-Pro-2 restaurant-reservation-manager % curl --data "restaurant_id=1&owner_name=Testing Test&owner_phone_number=1-000-888-9999&start_datetime=2024-03-30T19:00:00Z&total_guests=3" http://127.0.0.1:3000/reservations -H "Accept: application/json"
+
+{"owner_name":"Testing Test","start_datetime":"2024-03-30T19:00:00.000Z","end_datetime":"2024-03-30T21:00:00.000Z","total_guests":3}%
+```
+
 Get occupied tables. This should return the reservation created just above
 ```
 curl -G http://127.0.0.1:3000/tables/occupied --data "restaurant_id=1&reservation_datetime=2024-03-30T19:00:00Z" -H "Accept: application/json"
+```
+
+Example response from server
+```
+GD@MacBook-Pro-2 restaurant-reservation-manager % curl -G http://127.0.0.1:3000/tables/occupied --data "restaurant_id=1&reservation_datetime=2024-03-30T19:00:00Z" -H "Accept: application/json"
+
+[{"restaurant":{"id":1,"name":"Oscar's Pizza","description":null,"created_at":"2024-03-11T15:27:37.653Z","updated_at":"2024-03-11T15:27:37.653Z"},"number":0}]%
 ```
 
 
