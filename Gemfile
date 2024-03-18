@@ -16,6 +16,11 @@ gem 'grape-entity'
 gem 'grape_on_rails_routes'
 gem 'grape-swagger'
 
+# For Grape::Entity ( https://github.com/ruby-grape/grape-entity )
+gem 'grape-swagger-entity', '~> 0.3'
+# For representable ( https://github.com/apotonick/representable )
+gem 'grape-swagger-representable', '~> 0.2'
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
