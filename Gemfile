@@ -14,6 +14,7 @@ gem "puma", ">= 5.0"
 gem "grape"
 gem 'grape-entity'
 gem 'grape_on_rails_routes'
+gem 'grape-swagger'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
