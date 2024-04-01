@@ -1,0 +1,296 @@
+{
+  "info": {
+    "title": "API title",
+    "version": "0.0.1"
+  },
+  "swagger": "2.0",
+  "produces": [
+    "application/xml",
+    "application/json",
+    "application/octet-stream",
+    "text/plain"
+  ],
+  "host": "example.org",
+  "tags": [
+    {
+      "name": "reservations",
+      "description": "Operations about reservations"
+    },
+    {
+      "name": "restaurants",
+      "description": "Operations about restaurants"
+    },
+    {
+      "name": "tables",
+      "description": "Operations about tables"
+    }
+  ],
+  "paths": {
+    "/reservations": {
+      "get": {
+        "description": "Return all reservations",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all reservations"
+          }
+        },
+        "tags": [
+          "reservations"
+        ],
+        "operationId": "getReservations"
+      },
+      "post": {
+        "description": "Create a reservation.",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "restaurant_id",
+            "description": "Restaurant ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "start_datetime",
+            "description": "Reservation Start Datetime",
+            "type": "string",
+            "format": "date-time",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "total_guests",
+            "description": "Reservation Total # of Guests",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "owner_name",
+            "description": "Owner's name.",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "owner_phone_number",
+            "description": "Owner's phone number.",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Create a reservation."
+          }
+        },
+        "tags": [
+          "reservations"
+        ],
+        "operationId": "postReservations"
+      }
+    },
+    "/reservations/{id}": {
+      "get": {
+        "description": "Return a reservation",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Reservation ID.",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a reservation"
+          }
+        },
+        "tags": [
+          "reservations"
+        ],
+        "operationId": "getReservationsId"
+      }
+    },
+    "/restaurants": {
+      "get": {
+        "description": "Return all restaurants",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all restaurants"
+          }
+        },
+        "tags": [
+          "restaurants"
+        ],
+        "operationId": "getRestaurants"
+      }
+    },
+    "/restaurants/{id}": {
+      "get": {
+        "description": "Return a restaurant",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Restaurant ID.",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a restaurant"
+          }
+        },
+        "tags": [
+          "restaurants"
+        ],
+        "operationId": "getRestaurantsId"
+      }
+    },
+    "/tables/occupied": {
+      "get": {
+        "description": "Return a list of occupied tables given a past datetime",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "restaurant_id",
+            "description": "Restaurant ID",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "reservation_datetime",
+            "description": "Past Reservation DateTime.",
+            "type": "string",
+            "format": "date-time",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a list of occupied tables given a past datetime"
+          }
+        },
+        "tags": [
+          "tables"
+        ],
+        "operationId": "getTablesOccupied"
+      }
+    },
+    "/tables": {
+      "get": {
+        "description": "Return all tables",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return all tables"
+          }
+        },
+        "tags": [
+          "tables"
+        ],
+        "operationId": "getTables"
+      }
+    },
+    "/tables/{id}": {
+      "get": {
+        "description": "Return a table",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Table ID.",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a table"
+          }
+        },
+        "tags": [
+          "tables"
+        ],
+        "operationId": "getTablesId"
+      }
+    }
+  },
+  "definitions": {
+    "API_Entities_Reservation": {
+      "type": "object",
+      "properties": {
+        "owner_name": {
+          "type": "string"
+        },
+        "start_datetime": {
+          "type": "string"
+        },
+        "end_datetime": {
+          "type": "string"
+        },
+        "total_guests": {
+          "type": "string"
+        }
+      }
+    },
+    "API_Entities_Restaurant": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "capacity": {
+          "type": "string"
+        }
+      }
+    },
+    "API_Entities_Table": {
+      "type": "object",
+      "properties": {
+        "restaurant": {
+          "type": "string"
+        },
+        "number": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
