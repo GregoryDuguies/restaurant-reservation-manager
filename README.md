@@ -130,6 +130,36 @@ Get occupied tables. This should return the reservation created just above
 curl -G http://127.0.0.1:3000/tables/occupied --data "restaurant_id=1&reservation_datetime=2024-03-30T19:00:00Z" -H "Accept: application/json"
 ```
 
+#### Faraday
+Post a new reservation with Faraday
+
+```
+connection = Faraday::Connection.new('http://localhost:3000/reservations')
+
+response = connection.post do |request|
+  request.headers['Content-Type'] = 'application/json'
+
+  request.params['restaurant_id'] = 1
+
+  request.params['owner_name'] = 'Testing Test'
+  request.params['owner_phone_number'] = '1-000-888-9999'
+
+  request.params['start_datetime'] = DateTime.new(2024, 4, 15, 19, 0, 0, 0)
+  request.params['total_guests'] = 3
+end
+```
+
+Get occupied tables. This should return the reservation created just above
+```
+connection = Faraday::Connection.new('http://localhost:3000/tables/occupied')
+
+response = connection.get do |request|
+  request.headers['Content-Type'] = 'application/json'
+
+  request.params['restaurant_id'] = 1
+  request.params['reservation_datetime'] = DateTime.new(2024, 4, 15, 19, 0, 0, 0)
+end
+```
 
 #### Grape Routes
 Here are the defined routes. You can view by running ```bundle exec rails grape:routes```
