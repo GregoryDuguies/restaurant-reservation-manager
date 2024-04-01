@@ -39,10 +39,10 @@ module Resources
         post do
           # authenticate!
 
-          Reservation.transaction do
-            restaurant = ::Restaurant.find(params[:restaurant_id])
+          restaurant = ::Restaurant.find(params[:restaurant_id])
 
-            if restaurant.max_availability_within_span(params[:start_datetime], params[:start_datetime] + 2.hours) > params[:total_guests]
+          if restaurant.max_availability_within_span(params[:start_datetime], params[:start_datetime] + 2.hours) > params[:total_guests]
+            ::ActiveRecord::Base.transaction do
               reservation = ::Reservation.new(restaurant: restaurant,
                                             start_datetime: params[:start_datetime],
                                             end_datetime: params[:start_datetime] + 2.hours,

@@ -144,6 +144,36 @@ GD@MacBook-Pro-2 restaurant-reservation-manager % curl -G http://127.0.0.1:3000/
 [{"restaurant":{"id":1,"name":"Oscar's Pizza","description":null,"created_at":"2024-03-11T15:27:37.653Z","updated_at":"2024-03-11T15:27:37.653Z"},"number":0}]%
 ```
 
+#### Faraday
+Post a new reservation with Faraday
+
+```
+connection = Faraday::Connection.new('http://localhost:3000/reservations')
+
+response = connection.post do |request|
+  request.headers['Content-Type'] = 'application/json'
+
+  request.params['restaurant_id'] = 1
+
+  request.params['owner_name'] = 'Testing Test'
+  request.params['owner_phone_number'] = '1-000-888-9999'
+
+  request.params['start_datetime'] = DateTime.new(2024, 4, 15, 19, 0, 0, 0)
+  request.params['total_guests'] = 3
+end
+```
+
+Get occupied tables. This should return the reservation created just above
+```
+connection = Faraday::Connection.new('http://localhost:3000/tables/occupied')
+
+response = connection.get do |request|
+  request.headers['Content-Type'] = 'application/json'
+
+  request.params['restaurant_id'] = 1
+  request.params['reservation_datetime'] = DateTime.new(2024, 4, 15, 19, 0, 0, 0)
+end
+```
 
 #### Grape Routes
 Here are the defined routes. You can view by running ```bundle exec rails grape:routes```
