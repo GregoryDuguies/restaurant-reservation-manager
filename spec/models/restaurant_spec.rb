@@ -15,7 +15,19 @@ RSpec.describe Restaurant, type: :model do
   end
 
   describe "#capacity" do
-    pending
+    let!(:restaurant_1) { FactoryBot.create(:restaurant) }
+    let!(:restaurant_2) { FactoryBot.create(:restaurant) }
+
+    let!(:table_1) { FactoryBot.create(:table, restaurant: restaurant_1) }
+    let!(:table_2) { FactoryBot.create(:table, restaurant: restaurant_1) }
+    let!(:table_3) { FactoryBot.create(:table, restaurant: restaurant_1) }
+
+    let!(:table_4) { FactoryBot.create(:table, restaurant: restaurant_2) }
+
+    it 'returns the sum of all related tables capacity' do
+      expect(restaurant_1.capacity).to eq(table_1.capacity + table_2.capacity + table_3.capacity)
+      expect(restaurant_2.capacity).to eq(table_4.capacity)
+    end
   end
 
   describe "#capacity_at_datetime" do
