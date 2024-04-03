@@ -163,6 +163,14 @@ response = connection.post do |request|
 end
 ```
 
+Example response from server
+```
+irb(main):088> response.success?
+=> true
+irb(main):089> response.body
+=> "{\"owner_name\":\"Testing Test\",\"start_datetime\":\"2024-04-15T19:00:00.000Z\",\"end_datetime\":\"2024-04-15T21:00:00.000Z\",\"total_guests\":3}"
+```
+
 Get occupied tables. This should return the reservation created just above
 ```
 connection = Faraday::Connection.new('http://localhost:3000/tables/occupied')
@@ -173,6 +181,14 @@ response = connection.get do |request|
   request.params['restaurant_id'] = 1
   request.params['reservation_datetime'] = DateTime.new(2024, 4, 15, 19, 0, 0, 0)
 end
+```
+
+Example response from server
+```
+irb(main):102> response.success?
+=> true
+irb(main):103> response.body
+=> "[{\"restaurant\":{\"id\":1,\"name\":\"Oscar's Pizza\",\"description\":null,\"created_at\":\"2024-03-11T15:27:37.653Z\",\"updated_at\":\"2024-03-11T15:27:37.653Z\"},\"number\":0}]"
 ```
 
 #### Grape Routes
